@@ -11,6 +11,12 @@ import CreateToken from "./pages/CreateToken";
 import Market from "./pages/Market";
 import Wallet from "./pages/Wallet";
 import Dashboard from "./pages/Dashboard";
+import About from "./pages/About";
+import Documentation from "./pages/Documentation";
+import Support from "./pages/Support";
+import Governance from "./pages/Governance";
+import Staking from "./pages/Staking";
+import Launchpad from "./pages/Launchpad";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -29,6 +35,12 @@ const App = () => (
             <Route path="/market" element={<Market />} />
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/documentation" element={<Documentation />} />
+            <Route path="/support" element={<Support />} />
+            <Route path="/governance" element={<Governance />} />
+            <Route path="/staking" element={<Staking />} />
+            <Route path="/launchpad" element={<Launchpad />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />

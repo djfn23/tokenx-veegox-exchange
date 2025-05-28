@@ -11,8 +11,17 @@ const Navbar = () => {
     { name: 'Accueil', path: '/' },
     { name: 'Marché', path: '/market' },
     { name: 'Créer', path: '/create-token' },
+    { name: 'Launchpad', path: '/launchpad' },
+    { name: 'Staking', path: '/staking' },
+    { name: 'Gouvernance', path: '/governance' },
     { name: 'Wallet', path: '/wallet' },
     { name: 'Dashboard', path: '/dashboard' }
+  ];
+
+  const moreItems = [
+    { name: 'À Propos', path: '/about' },
+    { name: 'Documentation', path: '/documentation' },
+    { name: 'Support', path: '/support' }
   ];
 
   return (
@@ -28,9 +37,9 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
+          <div className="hidden lg:block">
             <div className="ml-10 flex items-baseline space-x-4">
-              {navItems.map((item) => (
+              {navItems.slice(0, 6).map((item) => (
                 <button
                   key={item.name}
                   onClick={() => navigate(item.path)}
@@ -39,6 +48,24 @@ const Navbar = () => {
                   {item.name}
                 </button>
               ))}
+              
+              {/* Dropdown pour "Plus" */}
+              <div className="relative group">
+                <button className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 hover:bg-gray-800/50">
+                  Plus ▾
+                </button>
+                <div className="absolute top-full left-0 mt-1 w-48 bg-tokenx-dark-light border border-gray-800 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                  {[...navItems.slice(6), ...moreItems].map((item) => (
+                    <button
+                      key={item.name}
+                      onClick={() => navigate(item.path)}
+                      className="block w-full text-left px-4 py-2 text-gray-300 hover:text-white hover:bg-gray-800/50 first:rounded-t-lg last:rounded-b-lg"
+                    >
+                      {item.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 
@@ -50,7 +77,7 @@ const Navbar = () => {
           </div>
 
           {/* Mobile menu button */}
-          <div className="md:hidden">
+          <div className="lg:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="text-gray-300 hover:text-white p-2"
@@ -70,9 +97,9 @@ const Navbar = () => {
 
       {/* Mobile menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-tokenx-dark-light border-t border-gray-800/50">
+        <div className="lg:hidden bg-tokenx-dark-light border-t border-gray-800/50">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            {navItems.map((item) => (
+            {[...navItems, ...moreItems].map((item) => (
               <button
                 key={item.name}
                 onClick={() => {
