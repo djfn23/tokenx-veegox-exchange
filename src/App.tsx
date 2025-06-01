@@ -18,6 +18,7 @@ import Governance from "./pages/Governance";
 import Staking from "./pages/Staking";
 import Launchpad from "./pages/Launchpad";
 import Auth from "./pages/Auth";
+import Explorer from "./pages/Explorer";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -43,6 +44,7 @@ const App = () => (
             <Route path="/staking" element={<Staking />} />
             <Route path="/launchpad" element={<Launchpad />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/explorer" element={<Explorer />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <Footer />

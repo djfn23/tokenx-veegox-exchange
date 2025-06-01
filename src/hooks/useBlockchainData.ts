@@ -3,10 +3,12 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { alchemyService } from '@/services/alchemy';
+import { veegoxChainService } from '@/services/veegoxchain';
 
 interface WalletData {
   balances: Record<string, number>;
   transactions: any[];
+  veegoxStats: any;
   isLoading: boolean;
   error: string | null;
 }
@@ -15,6 +17,7 @@ export const useBlockchainData = (walletAddress: string | null, userId: string |
   const [walletData, setWalletData] = useState<WalletData>({
     balances: {},
     transactions: [],
+    veegoxStats: null,
     isLoading: false,
     error: null
   });
@@ -55,6 +58,29 @@ export const useBlockchainData = (walletAddress: string | null, userId: string |
     enabled: !!userId
   });
 
+  // Récupérer les statistiques VeegoxChain
+  const { data: veegoxStats, isLoading: statsLoading } = useQuery({
+    queryKey: ['veegoxchain-user-stats', userId],
+    queryFn: async () => {
+      if (!userId) return null;
+      
+      // Récupérer les statistiques réseau
+      const networkStats = await veegoxChainService.getNetworkStats();
+      
+      // Récupérer les transactions de l'utilisateur sur VeegoxChain
+      const { data: userTxCount } = await supabase
+        .from('veegoxchain_transactions')
+        .select('transaction_hash', { count: 'exact' })
+        .or(`from_address.eq.${walletAddress},to_address.eq.${walletAddress}`);
+      
+      return {
+        ...networkStats,
+        userTransactions: userTxCount || 0
+      };
+    },
+    enabled: !!userId && !!walletAddress
+  });
+
   // Fonction pour synchroniser les données
   const syncWalletData = async () => {
     if (!walletAddress || !userId) {
@@ -65,11 +91,10 @@ export const useBlockchainData = (walletAddress: string | null, userId: string |
     setWalletData(prev => ({ ...prev, isLoading: true, error: null }));
 
     try {
+      // Synchroniser avec Alchemy
       await alchemyService.syncWalletData(walletAddress, userId);
       
-      // Recharger les données après la synchronisation
       // Les queries se mettront à jour automatiquement grâce à React Query
-      
       setWalletData(prev => ({ ...prev, isLoading: false }));
     } catch (error) {
       console.error('Error syncing wallet data:', error);
@@ -93,10 +118,11 @@ export const useBlockchainData = (walletAddress: string | null, userId: string |
         ...prev,
         balances: balanceMap,
         transactions: transactions || [],
-        isLoading: balancesLoading || transactionsLoading
+        veegoxStats: veegoxStats,
+        isLoading: balancesLoading || transactionsLoading || statsLoading
       }));
     }
-  }, [balances, transactions, balancesLoading, transactionsLoading]);
+  }, [balances, transactions, veegoxStats, balancesLoading, transactionsLoading, statsLoading]);
 
   return {
     ...walletData,
