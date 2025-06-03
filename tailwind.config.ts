@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -19,6 +18,18 @@ export default {
 			}
 		},
 		extend: {
+			screens: {
+				'xs': '475px',
+				'sm': '640px',
+				'md': '768px',
+				'lg': '1024px',
+				'xl': '1280px',
+				'2xl': '1536px',
+				// Custom mobile-first breakpoints
+				'mobile': {'max': '767px'},
+				'tablet': {'min': '768px', 'max': '1023px'},
+				'desktop': {'min': '1024px'},
+			},
 			colors: {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
@@ -105,12 +116,26 @@ export default {
 				'6xl': ['3.75rem', { lineHeight: '1' }],
 				'7xl': ['4.5rem', { lineHeight: '1' }],
 				'8xl': ['6rem', { lineHeight: '1' }],
-				'9xl': ['8rem', { lineHeight: '1' }]
+				'9xl': ['8rem', { lineHeight: '1' }],
+				// Mobile-specific font sizes
+				'mobile-xs': ['0.75rem', { lineHeight: '1rem' }],
+				'mobile-sm': ['0.875rem', { lineHeight: '1.25rem' }],
+				'mobile-base': ['1rem', { lineHeight: '1.5rem' }],
+				'mobile-lg': ['1.125rem', { lineHeight: '1.75rem' }],
+				'mobile-xl': ['1.25rem', { lineHeight: '1.75rem' }],
+				'mobile-2xl': ['1.5rem', { lineHeight: '2rem' }],
+				'mobile-3xl': ['1.875rem', { lineHeight: '2.25rem' }],
+				'mobile-4xl': ['2.25rem', { lineHeight: '2.5rem' }],
 			},
 			spacing: {
 				'18': '4.5rem',
 				'88': '22rem',
-				'128': '32rem'
+				'128': '32rem',
+				// Mobile-specific spacing
+				'safe-top': 'env(safe-area-inset-top)',
+				'safe-bottom': 'env(safe-area-inset-bottom)',
+				'safe-left': 'env(safe-area-inset-left)',
+				'safe-right': 'env(safe-area-inset-right)',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -210,6 +235,15 @@ export default {
 				'glass': '0 8px 32px rgba(0, 0, 0, 0.12)',
 				'glass-lg': '0 24px 48px rgba(0, 0, 0, 0.15)',
 				'inner-glow': 'inset 0 2px 4px 0 rgba(124, 58, 237, 0.1)'
+			},
+			// Mobile-specific utilities
+			minHeight: {
+				'screen-mobile': '100vh',
+				'screen-safe': 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))',
+			},
+			maxHeight: {
+				'screen-mobile': '100vh',
+				'screen-safe': 'calc(100vh - env(safe-area-inset-top) - env(safe-area-inset-bottom))',
 			}
 		}
 	},

@@ -8,9 +8,11 @@ import CTASection from '@/components/UI/CTASection';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Cpu, TrendingUp, Shield, Zap, Users, Globe } from 'lucide-react';
+import { useResponsive } from '@/hooks/use-mobile';
 
 const Home = () => {
   const navigate = useNavigate();
+  const { isMobile, isTablet } = useResponsive();
 
   const featuredTokens = [
     { name: 'UserToken', symbol: 'USER', price: 4.752, change: 2.8, volume: '$125K', marketCap: '$2.4M' },
@@ -63,16 +65,22 @@ const Home = () => {
       <HeroSection />
 
       {/* Trading Chart Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-tokenx-dark-light/30">
+      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-tokenx-dark-light/30">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <div className="text-center mb-8 sm:mb-12">
+            <h2 className={`font-bold text-white mb-4 sm:mb-6 ${
+              isMobile 
+                ? 'text-3xl' 
+                : 'text-4xl md:text-5xl'
+            }`}>
               Marché en{' '}
               <span className="bg-gradient-to-r from-tokenx-purple to-tokenx-blue bg-clip-text text-transparent">
                 Temps Réel
               </span>
             </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className={`text-gray-400 max-w-3xl mx-auto ${
+              isMobile ? 'text-lg' : 'text-xl'
+            }`}>
               Suivez les performances de vos tokens favoris avec nos graphiques avancés
             </p>
           </div>
@@ -83,20 +91,32 @@ const Home = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8">
+      <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+            <h2 className={`font-bold text-white mb-4 sm:mb-6 ${
+              isMobile 
+                ? 'text-3xl' 
+                : 'text-4xl md:text-5xl'
+            }`}>
               Fonctionnalités{' '}
               <span className="bg-gradient-to-r from-tokenx-purple to-tokenx-blue bg-clip-text text-transparent">
                 Révolutionnaires
               </span>
             </h2>
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+            <p className={`text-gray-400 max-w-3xl mx-auto ${
+              isMobile ? 'text-lg' : 'text-xl'
+            }`}>
               Découvrez les outils avancés qui font de TokenX la plateforme de référence pour la création de tokens
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className={`grid gap-6 sm:gap-8 ${
+            isMobile 
+              ? 'grid-cols-1' 
+              : isTablet 
+                ? 'grid-cols-2' 
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+          }`}>
             {features.map((feature, index) => (
               <FeatureCard
                 key={feature.title}
@@ -115,30 +135,48 @@ const Home = () => {
       <AnimatedStats />
 
       {/* Featured Tokens */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-tokenx-dark-light/30">
+      <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 bg-tokenx-dark-light/30">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col lg:flex-row justify-between items-center mb-16">
-            <div className="text-center lg:text-left mb-8 lg:mb-0">
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+          <div className={`justify-between items-center mb-12 sm:mb-16 ${
+            isMobile ? 'text-center space-y-6' : 'flex flex-col lg:flex-row text-center lg:text-left space-y-8 lg:space-y-0'
+          }`}>
+            <div>
+              <h2 className={`font-bold text-white mb-4 ${
+                isMobile 
+                  ? 'text-3xl' 
+                  : 'text-4xl md:text-5xl'
+              }`}>
                 Tokens{' '}
                 <span className="bg-gradient-to-r from-tokenx-purple to-tokenx-blue bg-clip-text text-transparent">
                   Populaires
                 </span>
               </h2>
-              <p className="text-xl text-gray-400 max-w-2xl">
+              <p className={`text-gray-400 max-w-2xl ${
+                isMobile ? 'text-lg' : 'text-xl'
+              }`}>
                 Découvrez les tokens les plus performants de notre plateforme
               </p>
             </div>
             <Button 
               variant="outline" 
               size="lg"
-              className="border-2 border-tokenx-purple/50 text-tokenx-purple hover:bg-tokenx-purple hover:text-white text-lg px-8 py-3 transition-all duration-300"
+              className={`border-2 border-tokenx-purple/50 text-tokenx-purple hover:bg-tokenx-purple hover:text-white transition-all duration-300 ${
+                isMobile 
+                  ? 'text-base px-6 py-3 w-full max-w-xs mx-auto' 
+                  : 'text-lg px-8 py-3'
+              }`}
               onClick={() => navigate('/market')}
             >
               Voir Tous les Tokens
             </Button>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className={`grid gap-6 sm:gap-8 ${
+            isMobile 
+              ? 'grid-cols-1' 
+              : isTablet 
+                ? 'grid-cols-2' 
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+          }`}>
             {featuredTokens.map((token, index) => (
               <div key={index} className="animate-fade-in" style={{ animationDelay: `${index * 0.2}s` }}>
                 <TokenCard {...token} />

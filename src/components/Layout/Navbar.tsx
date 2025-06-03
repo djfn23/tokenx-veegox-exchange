@@ -2,13 +2,16 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Menu, X, Wallet } from 'lucide-react';
+import { Menu, X, Wallet, ChevronDown } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMoreOpen, setIsMoreOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const isMobile = useIsMobile();
 
   // Handle scroll effect
   useEffect(() => {
@@ -20,6 +23,12 @@ const Navbar = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMenuOpen(false);
+    setIsMoreOpen(false);
+  }, [location.pathname]);
 
   const navItems = [
     { name: 'Accueil', path: '/' },
@@ -47,19 +56,19 @@ const Navbar = () => {
         : 'bg-transparent'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
-          {/* Logo */}
+        <div className="flex items-center justify-between h-16 md:h-20">
+          {/* Logo - Responsive sizing */}
           <div 
             className="flex items-center cursor-pointer group" 
             onClick={() => navigate('/')}
           >
             <div className="relative">
-              <div className="text-3xl font-bold font-display text-gradient group-hover:scale-110 transition-transform duration-300">
+              <div className="text-2xl md:text-3xl font-bold font-display text-gradient group-hover:scale-110 transition-transform duration-300">
                 TOKENX
               </div>
               <div className="absolute -inset-2 bg-gradient-to-r from-tokenx-purple/20 to-tokenx-blue/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"></div>
             </div>
-            <span className="ml-3 text-sm text-gray-400 font-medium group-hover:text-gray-300 transition-colors duration-300">
+            <span className="ml-2 md:ml-3 text-xs md:text-sm text-gray-400 font-medium group-hover:text-gray-300 transition-colors duration-300">
               by Veegox
             </span>
           </div>
@@ -71,7 +80,7 @@ const Navbar = () => {
                 <button
                   key={item.name}
                   onClick={() => navigate(item.path)}
-                  className={`relative px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 group animate-fade-in-fast ${
+                  className={`relative px-3 xl:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 group animate-fade-in-fast ${
                     isActivePath(item.path)
                       ? 'text-white bg-tokenx-glass border border-tokenx-glass-border shadow-inner-glow'
                       : 'text-gray-300 hover:text-white hover:bg-tokenx-glass/50'
@@ -86,41 +95,50 @@ const Navbar = () => {
                 </button>
               ))}
               
-              {/* Enhanced Dropdown */}
-              <div className="relative group">
-                <button className="px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-tokenx-glass/50 transition-all duration-300 flex items-center space-x-1">
+              {/* Desktop Dropdown */}
+              <div className="relative">
+                <button 
+                  className="px-3 xl:px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-tokenx-glass/50 transition-all duration-300 flex items-center space-x-1"
+                  onClick={() => setIsMoreOpen(!isMoreOpen)}
+                >
                   <span>Plus</span>
-                  <svg className="w-4 h-4 transition-transform duration-300 group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
+                  <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${isMoreOpen ? 'rotate-180' : ''}`} />
                 </button>
-                <div className="absolute top-full right-0 mt-2 w-56 card-glass rounded-2xl shadow-glass-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
-                  <div className="p-2">
-                    {moreItems.map((item, index) => (
-                      <button
-                        key={item.name}
-                        onClick={() => navigate(item.path)}
-                        className={`block w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-tokenx-glass hover:text-white animate-fade-in-fast ${
-                          isActivePath(item.path) 
-                            ? 'text-white bg-tokenx-glass' 
-                            : 'text-gray-300'
-                        }`}
-                        style={{ animationDelay: `${index * 50}ms` }}
-                      >
-                        {item.name}
-                      </button>
-                    ))}
+                {isMoreOpen && (
+                  <div className="absolute top-full right-0 mt-2 w-56 card-glass rounded-2xl shadow-glass-lg">
+                    <div className="p-2">
+                      {moreItems.map((item, index) => (
+                        <button
+                          key={item.name}
+                          onClick={() => {
+                            navigate(item.path);
+                            setIsMoreOpen(false);
+                          }}
+                          className={`block w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-tokenx-glass hover:text-white animate-fade-in-fast ${
+                            isActivePath(item.path) 
+                              ? 'text-white bg-tokenx-glass' 
+                              : 'text-gray-300'
+                          }`}
+                          style={{ animationDelay: `${index * 50}ms` }}
+                        >
+                          {item.name}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
 
-          {/* Connect Wallet Button */}
-          <div className="hidden md:block">
-            <Button className="btn-gradient hover-glow group text-sm font-semibold px-6 py-3 h-auto">
-              <Wallet className="w-4 h-4 mr-2 group-hover:rotate-12 transition-transform duration-300" />
-              <span>Connecter Wallet</span>
+          {/* Connect Wallet Button - Hidden on small mobile */}
+          <div className="hidden sm:block lg:block">
+            <Button className={`btn-gradient hover-glow group font-semibold h-auto ${
+              isMobile ? 'text-xs px-3 py-2' : 'text-sm px-6 py-3'
+            }`}>
+              <Wallet className={`${isMobile ? 'w-3 h-3 mr-1' : 'w-4 h-4 mr-2'} group-hover:rotate-12 transition-transform duration-300`} />
+              <span className={isMobile ? 'hidden' : 'block'}>Connecter</span>
+              <span className={isMobile ? 'block' : 'hidden'}>Wallet</span>
             </Button>
           </div>
 
@@ -128,9 +146,9 @@ const Navbar = () => {
           <div className="lg:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="relative p-3 text-gray-300 hover:text-white hover:bg-tokenx-glass rounded-xl transition-all duration-300"
+              className="relative p-2 md:p-3 text-gray-300 hover:text-white hover:bg-tokenx-glass rounded-xl transition-all duration-300"
             >
-              <div className="w-6 h-6 relative">
+              <div className="w-5 h-5 md:w-6 md:h-6 relative">
                 <Menu className={`absolute inset-0 transition-all duration-300 ${isMenuOpen ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'}`} />
                 <X className={`absolute inset-0 transition-all duration-300 ${isMenuOpen ? 'opacity-100 rotate-0' : 'opacity-0 -rotate-90'}`} />
               </div>
@@ -139,31 +157,60 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Enhanced Mobile menu */}
-      <div className={`lg:hidden overflow-hidden transition-all duration-500 ${
+      {/* Enhanced Mobile menu with slide animation */}
+      <div className={`lg:hidden overflow-hidden transition-all duration-500 ease-in-out ${
         isMenuOpen 
-          ? 'max-h-screen opacity-100' 
+          ? 'max-h-[80vh] opacity-100' 
           : 'max-h-0 opacity-0'
       }`}>
-        <div className="card-glass border-t border-tokenx-glass-border mx-4 mb-4 rounded-2xl">
-          <div className="p-6 space-y-3">
-            {[...navItems, ...moreItems].map((item, index) => (
-              <button
-                key={item.name}
-                onClick={() => {
-                  navigate(item.path);
-                  setIsMenuOpen(false);
-                }}
-                className={`block w-full text-left px-4 py-3 rounded-xl text-base font-medium transition-all duration-300 animate-fade-in-fast ${
-                  isActivePath(item.path)
-                    ? 'text-white bg-tokenx-glass shadow-inner-glow'
-                    : 'text-gray-300 hover:text-white hover:bg-tokenx-glass/50'
-                }`}
-                style={{ animationDelay: `${index * 50}ms` }}
-              >
-                {item.name}
-              </button>
-            ))}
+        <div className="card-glass border-t border-tokenx-glass-border mx-2 sm:mx-4 mb-4 rounded-2xl">
+          <div className="p-4 sm:p-6 max-h-[70vh] overflow-y-auto">
+            {/* Mobile Navigation Items */}
+            <div className="space-y-2">
+              {navItems.map((item, index) => (
+                <button
+                  key={item.name}
+                  onClick={() => {
+                    navigate(item.path);
+                    setIsMenuOpen(false);
+                  }}
+                  className={`block w-full text-left px-4 py-3 sm:py-4 rounded-xl text-base font-medium transition-all duration-300 animate-fade-in-fast ${
+                    isActivePath(item.path)
+                      ? 'text-white bg-tokenx-glass shadow-inner-glow'
+                      : 'text-gray-300 hover:text-white hover:bg-tokenx-glass/50'
+                  }`}
+                  style={{ animationDelay: `${index * 50}ms` }}
+                >
+                  {item.name}
+                </button>
+              ))}
+            </div>
+
+            {/* More Items Separator */}
+            <div className="border-t border-tokenx-glass-border my-4"></div>
+            
+            {/* More Items */}
+            <div className="space-y-2">
+              {moreItems.map((item, index) => (
+                <button
+                  key={item.name}
+                  onClick={() => {
+                    navigate(item.path);
+                    setIsMenuOpen(false);
+                  }}
+                  className={`block w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 animate-fade-in-fast ${
+                    isActivePath(item.path)
+                      ? 'text-white bg-tokenx-glass shadow-inner-glow'
+                      : 'text-gray-300 hover:text-white hover:bg-tokenx-glass/50'
+                  }`}
+                  style={{ animationDelay: `${(navItems.length + index) * 50}ms` }}
+                >
+                  {item.name}
+                </button>
+              ))}
+            </div>
+
+            {/* Mobile Wallet Button */}
             <div className="pt-4 border-t border-tokenx-glass-border mt-4">
               <Button className="btn-gradient w-full group text-base font-semibold py-4">
                 <Wallet className="w-5 h-5 mr-2 group-hover:rotate-12 transition-transform duration-300" />
@@ -173,6 +220,14 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+
+      {/* Mobile menu backdrop */}
+      {isMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm -z-10 lg:hidden"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
     </nav>
   );
 };
