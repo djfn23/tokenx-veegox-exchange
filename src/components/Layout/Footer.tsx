@@ -1,12 +1,12 @@
 
-import { Github, Twitter, Discord, Mail, ExternalLink, Heart } from 'lucide-react';
+import { Github, Twitter, MessageCircle, Mail, ExternalLink, Heart } from 'lucide-react';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const socialLinks = [
     { icon: Twitter, href: '#', label: 'Twitter' },
-    { icon: Discord, href: '#', label: 'Discord' },
+    { icon: MessageCircle, href: '#', label: 'Discord' },
     { icon: Github, href: '#', label: 'GitHub' },
     { icon: Mail, href: '#', label: 'Email' }
   ];
