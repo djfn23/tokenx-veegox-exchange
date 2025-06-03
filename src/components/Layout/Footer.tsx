@@ -1,62 +1,177 @@
 
+import { Github, Twitter, Discord, Mail, ExternalLink, Heart } from 'lucide-react';
+
 const Footer = () => {
+  const currentYear = new Date().getFullYear();
+
+  const socialLinks = [
+    { icon: Twitter, href: '#', label: 'Twitter' },
+    { icon: Discord, href: '#', label: 'Discord' },
+    { icon: Github, href: '#', label: 'GitHub' },
+    { icon: Mail, href: '#', label: 'Email' }
+  ];
+
+  const footerSections = [
+    {
+      title: 'Plateforme',
+      links: [
+        { name: 'Créer un Token', href: '/create-token' },
+        { name: 'Marketplace', href: '/market' },
+        { name: 'Trading', href: '/market' },
+        { name: 'Launchpad', href: '/launchpad' },
+        { name: 'Staking', href: '/staking' },
+        { name: 'Gouvernance', href: '/governance' }
+      ]
+    },
+    {
+      title: 'Ressources',
+      links: [
+        { name: 'Documentation', href: '/documentation' },
+        { name: 'API Reference', href: '/documentation' },
+        { name: 'Guides', href: '/documentation' },
+        { name: 'Tutorials', href: '/documentation' },
+        { name: 'Blog', href: '#' },
+        { name: 'Roadmap', href: '#' }
+      ]
+    },
+    {
+      title: 'Support',
+      links: [
+        { name: 'Centre d\'aide', href: '/support' },
+        { name: 'Contact', href: '/support' },
+        { name: 'Bug Reports', href: '/support' },
+        { name: 'Feedback', href: '/support' },
+        { name: 'Status', href: '#' },
+        { name: 'Security', href: '#' }
+      ]
+    },
+    {
+      title: 'Légal',
+      links: [
+        { name: 'Conditions d\'utilisation', href: '#' },
+        { name: 'Politique de confidentialité', href: '#' },
+        { name: 'Mentions légales', href: '#' },
+        { name: 'Cookies', href: '#' }
+      ]
+    }
+  ];
+
   return (
-    <footer className="bg-tokenx-dark-light border-t border-gray-800/50 mt-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Logo & Description */}
-          <div className="col-span-1 md:col-span-2">
-            <div className="text-2xl font-bold bg-gradient-to-r from-tokenx-purple to-tokenx-blue bg-clip-text text-transparent mb-4">
-              TOKENX by Veegox
-            </div>
-            <p className="text-gray-400 mb-4 max-w-md">
-              La plateforme décentralisée pour créer, déployer et trader vos tokens personnalisés sur Ethereum.
-            </p>
-            <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-tokenx-purple transition-colors">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-tokenx-purple transition-colors">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z"/>
-                </svg>
-              </a>
-              <a href="#" className="text-gray-400 hover:text-tokenx-purple transition-colors">
-                <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.219-.359-1.219c0-1.142.662-1.995 1.488-1.995.703 0 1.043.527 1.043 1.16 0 .707-.449 1.763-.681 2.739-.194.824.412 1.496 1.221 1.496 1.466 0 2.594-1.544 2.594-3.773 0-1.973-1.416-3.351-3.436-3.351-2.341 0-3.715 1.756-3.715 3.571 0 .707.273 1.467.614 1.879.067.082.077.154.057.238-.061.26-.196.837-.223.953-.035.146-.112.177-.259.107-1.022-.476-1.657-1.972-1.657-3.176 0-2.598 1.887-4.984 5.437-4.984 2.856 0 5.074 2.036 5.074 4.756 0 2.837-1.789 5.116-4.27 5.116-.834 0-1.622-.435-1.89-1.014l-.513 1.953c-.185.721-.685 1.624-1.019 2.175A11.99 11.99 0 0 0 12.017 24C18.624 24 24 18.624 24 12.017 24 5.396 18.624.029 12.017.029z"/>
-                </svg>
-              </a>
-            </div>
-          </div>
+    <footer className="relative mt-32 overflow-hidden">
+      {/* Background with gradient */}
+      <div className="absolute inset-0 bg-gradient-to-t from-tokenx-dark via-tokenx-dark-light to-transparent"></div>
+      
+      {/* Floating elements */}
+      <div className="absolute top-0 left-1/4 w-64 h-64 bg-tokenx-purple/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-tokenx-blue/5 rounded-full blur-3xl"></div>
 
-          {/* Links */}
-          <div>
-            <h3 className="text-white font-semibold mb-4">Plateforme</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Créer un Token</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Marketplace</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Trading</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Gouvernance</a></li>
-            </ul>
-          </div>
+      <div className="relative">
+        {/* Main footer content */}
+        <div className="card-glass border-t border-tokenx-glass-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
+              {/* Brand section */}
+              <div className="lg:col-span-4">
+                <div className="space-y-6">
+                  <div>
+                    <div className="text-4xl font-bold font-display text-gradient mb-2">
+                      TOKENX
+                    </div>
+                    <div className="text-lg text-gray-400 font-medium">
+                      by Veegox
+                    </div>
+                  </div>
+                  
+                  <p className="text-gray-400 leading-relaxed max-w-md text-lg">
+                    La plateforme décentralisée de référence pour créer, déployer et trader 
+                    vos tokens personnalisés sur la blockchain Ethereum.
+                  </p>
 
-          <div>
-            <h3 className="text-white font-semibold mb-4">Support</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Documentation</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">API</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Bug Report</a></li>
-            </ul>
+                  {/* Social links */}
+                  <div className="flex space-x-4">
+                    {socialLinks.map((social) => (
+                      <a
+                        key={social.label}
+                        href={social.href}
+                        className="group card-glass rounded-xl p-3 hover-glow transition-all duration-300"
+                        aria-label={social.label}
+                      >
+                        <social.icon className="w-5 h-5 text-gray-400 group-hover:text-white group-hover:scale-110 transition-all duration-300" />
+                      </a>
+                    ))}
+                  </div>
+
+                  {/* Newsletter */}
+                  <div className="space-y-3">
+                    <h4 className="text-white font-semibold">Newsletter</h4>
+                    <div className="flex space-x-2">
+                      <input
+                        type="email"
+                        placeholder="Votre email"
+                        className="flex-1 px-4 py-3 bg-tokenx-glass border border-tokenx-glass-border rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-tokenx-purple transition-colors duration-300"
+                      />
+                      <button className="btn-gradient px-6 py-3 rounded-xl font-medium">
+                        <ExternalLink className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Links sections */}
+              <div className="lg:col-span-8">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                  {footerSections.map((section) => (
+                    <div key={section.title}>
+                      <h3 className="text-white font-bold font-display mb-6 text-lg">
+                        {section.title}
+                      </h3>
+                      <ul className="space-y-3">
+                        {section.links.map((link) => (
+                          <li key={link.name}>
+                            <a
+                              href={link.href}
+                              className="text-gray-400 hover:text-white transition-colors duration-300 text-sm font-medium hover:translate-x-1 transform transition-transform duration-300 inline-block"
+                            >
+                              {link.name}
+                            </a>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center">
-          <p className="text-gray-400">
-            © 2024 TokenX by Veegox. Tous droits réservés.
-          </p>
+        {/* Bottom bar */}
+        <div className="card-glass border-t border-tokenx-glass-border">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+              <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
+                <p className="text-gray-400 text-sm">
+                  © {currentYear} TokenX by Veegox. Tous droits réservés.
+                </p>
+                <div className="flex items-center space-x-1 text-gray-400 text-sm">
+                  <span>Fait avec</span>
+                  <Heart className="w-4 h-4 text-red-500 animate-pulse" />
+                  <span>pour la communauté DeFi</span>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-6">
+                <div className="flex items-center space-x-2 text-sm text-gray-400">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                  <span>Tous systèmes opérationnels</span>
+                </div>
+                <div className="text-sm text-gray-400">
+                  Version 2.0.1
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </footer>

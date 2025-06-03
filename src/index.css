@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Poppins:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -33,7 +35,7 @@
     --input: 39 39 72;
     --ring: 124 58 237;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
 
     --sidebar-background: 15 15 35;
     --sidebar-foreground: 255 255 255;
@@ -54,24 +56,222 @@
   body {
     @apply bg-tokenx-dark text-foreground font-sans antialiased;
     background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+    background-attachment: fixed;
     min-height: 100vh;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
 
   html {
     scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+    font-feature-settings: 'ss01', 'ss02';
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-tokenx-dark-light;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-tokenx-purple/50 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-tokenx-purple/70;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-tokenx-purple/30 text-white;
+  }
+
+  ::-moz-selection {
+    @apply bg-tokenx-purple/30 text-white;
   }
 }
 
 @layer components {
+  /* Enhanced Button Styles */
   .btn-gradient {
-    @apply bg-gradient-to-r from-tokenx-purple to-tokenx-blue hover:from-tokenx-purple-light hover:to-tokenx-blue-light transition-all duration-300;
+    @apply bg-gradient-to-r from-tokenx-purple to-tokenx-blue hover:from-tokenx-purple-light hover:to-tokenx-blue-light transition-all duration-500 transform hover:scale-105;
+    @apply shadow-glow hover:shadow-glow-lg;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-gradient::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn-gradient:hover::before {
+    left: 100%;
+  }
+
+  .btn-glass {
+    @apply bg-tokenx-glass backdrop-blur-xl border border-tokenx-glass-border;
+    @apply hover:bg-white/10 hover:border-white/20 transition-all duration-300;
+    @apply shadow-glass hover:shadow-glass-lg;
   }
   
+  /* Enhanced Card Styles */
   .card-gradient {
-    @apply bg-gradient-to-br from-tokenx-dark-light to-tokenx-dark-lighter border border-gray-800/50;
+    @apply bg-gradient-to-br from-tokenx-dark-card to-tokenx-dark-lighter;
+    @apply border border-tokenx-glass-border backdrop-blur-lg;
+    @apply shadow-glass hover:shadow-glass-lg transition-all duration-500;
+  }
+
+  .card-glass {
+    @apply bg-tokenx-glass backdrop-blur-2xl border border-tokenx-glass-border;
+    @apply hover:bg-white/10 hover:border-white/15 transition-all duration-300;
+    @apply shadow-glass hover:shadow-glass-lg;
   }
   
+  /* Enhanced Glow Effects */
   .glow-effect {
-    @apply animate-glow;
+    @apply animate-glow-intense;
+  }
+
+  .glow-purple {
+    @apply shadow-glow hover:shadow-glow-lg;
+  }
+
+  .glow-blue {
+    @apply shadow-glow-blue;
+  }
+
+  /* Text Effects */
+  .text-gradient {
+    @apply bg-gradient-to-r from-tokenx-purple via-tokenx-blue to-tokenx-purple bg-clip-text text-transparent;
+    background-size: 200% auto;
+    animation: gradient-shift 3s ease infinite;
+  }
+
+  .text-glow {
+    text-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+  }
+
+  /* Floating Animation */
+  .float {
+    @apply animate-float;
+  }
+
+  /* Glass Morphism */
+  .glass-morphism {
+    @apply bg-tokenx-glass backdrop-blur-3xl border border-tokenx-glass-border;
+    @apply shadow-glass;
+  }
+
+  /* Shimmer Effect */
+  .shimmer {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    animation: shimmer 3s infinite;
+  }
+
+  /* Enhanced Hover Effects */
+  .hover-lift {
+    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300 hover:shadow-glow-lg hover:scale-105;
+  }
+
+  /* Backdrop Effects */
+  .backdrop-noise {
+    position: relative;
+  }
+
+  .backdrop-noise::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  /* Loading States */
+  .loading-shimmer {
+    background: linear-gradient(110deg, #e2e8f0 8%, #f1f5f9 18%, #e2e8f0 33%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  /* Interactive Elements */
+  .interactive {
+    @apply transition-all duration-300 cursor-pointer;
+    @apply hover:scale-105 hover:shadow-lg active:scale-95;
+  }
+
+  /* Pulse Animation */
+  .pulse-ring {
+    @apply absolute rounded-full animate-pulse-glow;
+  }
+}
+
+@layer utilities {
+  /* Typography utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Spacing utilities */
+  .space-y-18 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(4.5rem * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(4.5rem * var(--tw-space-y-reverse));
+  }
+
+  /* Animation utilities */
+  .animate-delay-75 {
+    animation-delay: 75ms;
+  }
+  
+  .animate-delay-150 {
+    animation-delay: 150ms;
+  }
+  
+  .animate-delay-300 {
+    animation-delay: 300ms;
+  }
+
+  .animate-delay-500 {
+    animation-delay: 500ms;
+  }
+
+  .animate-delay-700 {
+    animation-delay: 700ms;
+  }
+
+  .animate-delay-1000 {
+    animation-delay: 1000ms;
   }
 }
