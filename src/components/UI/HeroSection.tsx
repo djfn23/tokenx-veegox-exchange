@@ -1,7 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight, Sparkles, TrendingUp, Shield } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -10,7 +10,11 @@ const HeroSection = () => {
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 bg-gradient-tokenx"></div>
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width=\"60\" height=\"60\" viewBox=\"0 0 60 60\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cg fill=\"none\" fill-rule=\"evenodd\"%3E%3Cg fill=\"%237c3aed\" fill-opacity=\"0.05\"%3E%3Ccircle cx=\"30\" cy=\"30\" r=\"2\"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-40"></div>
+      <div className="absolute inset-0 opacity-40">
+        <div className="w-full h-full bg-repeat" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%237c3aed' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+        }}></div>
+      </div>
       
       {/* Floating Elements */}
       <div className="absolute top-20 left-10 w-20 h-20 bg-tokenx-purple/20 rounded-full blur-xl animate-pulse"></div>
@@ -27,7 +31,7 @@ const HeroSection = () => {
         {/* Main Title */}
         <h1 className="text-6xl md:text-8xl font-bold mb-8 leading-tight">
           <span className="bg-gradient-to-r from-white via-tokenx-purple to-tokenx-blue bg-clip-text text-transparent animate-fade-in">
-            L'Avenir de la
+            L&apos;Avenir de la
           </span>
           <br />
           <span className="bg-gradient-to-r from-tokenx-blue via-tokenx-purple to-white bg-clip-text text-transparent animate-fade-in" style={{ animationDelay: '0.3s' }}>
@@ -37,7 +41,7 @@ const HeroSection = () => {
 
         {/* Subtitle */}
         <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed animate-fade-in" style={{ animationDelay: '0.6s' }}>
-          Créez, déployez et tradez vos tokens personnalisés sur notre plateforme d'échange révolutionnaire.
+          Créez, déployez et tradez vos tokens personnalisés sur notre plateforme d&apos;échange révolutionnaire.
           <br />
           <span className="text-tokenx-purple font-semibold">Powered by VeegoxChain</span>
         </p>
