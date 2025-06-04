@@ -144,6 +144,95 @@ export type Database = {
         }
         Relationships: []
       }
+      crowdfunding_contributions: {
+        Row: {
+          amount: number
+          contributor_id: string
+          created_at: string
+          id: string
+          project_id: string
+          token_type: Database["public"]["Enums"]["token_type"]
+          transaction_hash: string | null
+        }
+        Insert: {
+          amount: number
+          contributor_id: string
+          created_at?: string
+          id?: string
+          project_id: string
+          token_type: Database["public"]["Enums"]["token_type"]
+          transaction_hash?: string | null
+        }
+        Update: {
+          amount?: number
+          contributor_id?: string
+          created_at?: string
+          id?: string
+          project_id?: string
+          token_type?: Database["public"]["Enums"]["token_type"]
+          transaction_hash?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "crowdfunding_contributions_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "crowdfunding_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      crowdfunding_projects: {
+        Row: {
+          category: string | null
+          created_at: string
+          creator_id: string
+          current_amount: number
+          description: string
+          end_date: string
+          goal_amount: number
+          id: string
+          image_url: string | null
+          start_date: string
+          status: string
+          title: string
+          token_type: Database["public"]["Enums"]["token_type"]
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          creator_id: string
+          current_amount?: number
+          description: string
+          end_date: string
+          goal_amount: number
+          id?: string
+          image_url?: string | null
+          start_date?: string
+          status?: string
+          title: string
+          token_type: Database["public"]["Enums"]["token_type"]
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          creator_id?: string
+          current_amount?: number
+          description?: string
+          end_date?: string
+          goal_amount?: number
+          id?: string
+          image_url?: string | null
+          start_date?: string
+          status?: string
+          title?: string
+          token_type?: Database["public"]["Enums"]["token_type"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       governance_proposals: {
         Row: {
           created_at: string

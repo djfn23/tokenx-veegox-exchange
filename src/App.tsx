@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -20,6 +19,8 @@ import Launchpad from "./pages/Launchpad";
 import Auth from "./pages/Auth";
 import Explorer from "./pages/Explorer";
 import NotFound from "./pages/NotFound";
+import Crowdfunding from "./pages/Crowdfunding";
+import ProjectDetails from "./pages/ProjectDetails";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,8 @@ const App = () => (
             <Route path="/governance" element={<Governance />} />
             <Route path="/staking" element={<Staking />} />
             <Route path="/launchpad" element={<Launchpad />} />
+            <Route path="/crowdfunding" element={<Crowdfunding />} />
+            <Route path="/crowdfunding/:projectId" element={<ProjectDetails />} />
             <Route path="/auth" element={<Auth />} />
             <Route path="/explorer" element={<Explorer />} />
             <Route path="*" element={<NotFound />} />
