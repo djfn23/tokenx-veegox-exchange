@@ -84,19 +84,19 @@ const Footer = () => {
               <div className={isMobile ? '' : 'lg:col-span-4'}>
                 <div className="space-y-4 sm:space-y-6">
                   <div className={isMobile ? 'text-center' : ''}>
-                    <div className={`font-bold font-display text-gradient mb-2 ${
+                    <div className={`font-bold font-display text-primary mb-2 ${
                       isMobile ? 'text-3xl' : 'text-4xl'
                     }`}>
                       TOKENX
                     </div>
-                    <div className={`text-gray-400 font-medium ${
+                    <div className={`text-subtle font-medium ${
                       isMobile ? 'text-base' : 'text-lg'
                     }`}>
                       by Veegox
                     </div>
                   </div>
                   
-                  <p className={`text-gray-400 leading-relaxed max-w-md ${
+                  <p className={`text-muted leading-relaxed max-w-md ${
                     isMobile ? 'text-base text-center mx-auto' : 'text-lg'
                   }`}>
                     La plateforme décentralisée de référence pour créer, déployer et trader 
@@ -116,7 +116,7 @@ const Footer = () => {
                         }`}
                         aria-label={social.label}
                       >
-                        <social.icon className={`text-gray-400 group-hover:text-white group-hover:scale-110 transition-all duration-300 ${
+                        <social.icon className={`text-subtle group-hover:text-secondary group-hover:scale-110 transition-all duration-300 ${
                           isMobile ? 'w-4 h-4' : 'w-5 h-5'
                         }`} />
                       </a>
@@ -125,7 +125,7 @@ const Footer = () => {
 
                   {/* Newsletter */}
                   <div className="space-y-3">
-                    <h4 className={`text-white font-semibold ${
+                    <h4 className={`text-secondary font-semibold ${
                       isMobile ? 'text-center' : ''
                     }`}>Newsletter</h4>
                     <div className={`flex space-x-2 ${
@@ -134,7 +134,7 @@ const Footer = () => {
                       <input
                         type="email"
                         placeholder="Votre email"
-                        className={`px-4 py-3 bg-tokenx-glass border border-tokenx-glass-border rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-tokenx-purple transition-colors duration-300 ${
+                        className={`px-4 py-3 bg-tokenx-glass border border-tokenx-glass-border rounded-xl text-body placeholder-subtle focus:outline-none focus:border-tokenx-purple transition-colors duration-300 ${
                           isMobile ? 'w-full' : 'flex-1'
                         }`}
                       />
@@ -163,7 +163,7 @@ const Footer = () => {
                 }`}>
                   {footerSections.map((section) => (
                     <div key={section.title}>
-                      <h3 className={`text-white font-bold font-display mb-4 sm:mb-6 ${
+                      <h3 className={`text-secondary font-bold font-display mb-4 sm:mb-6 ${
                         isMobile ? 'text-base' : 'text-lg'
                       }`}>
                         {section.title}
@@ -173,7 +173,7 @@ const Footer = () => {
                           <li key={link.name}>
                             <a
                               href={link.href}
-                              className={`text-gray-400 hover:text-white transition-colors duration-300 font-medium hover:translate-x-1 transform transition-transform duration-300 inline-block ${
+                              className={`text-muted hover:text-body transition-colors duration-300 font-medium hover:translate-x-1 transform transition-transform duration-300 inline-block ${
                                 isMobile ? 'text-xs' : 'text-sm'
                               }`}
                             >
@@ -203,12 +203,12 @@ const Footer = () => {
                   ? 'flex flex-col' 
                   : 'flex flex-col md:flex-row md:space-y-0 md:space-x-6'
               }`}>
-                <p className={`text-gray-400 ${
+                <p className={`text-subtle ${
                   isMobile ? 'text-xs' : 'text-sm'
                 }`}>
                   © {currentYear} TokenX by Veegox. Tous droits réservés.
                 </p>
-                <div className={`flex items-center space-x-1 text-gray-400 ${
+                <div className={`flex items-center space-x-1 text-subtle ${
                   isMobile ? 'text-xs' : 'text-sm'
                 }`}>
                   <span>Fait avec</span>
@@ -222,13 +222,13 @@ const Footer = () => {
                   ? 'flex flex-col space-x-0 space-y-2' 
                   : 'flex'
               }`}>
-                <div className={`flex items-center space-x-2 text-gray-400 ${
+                <div className={`flex items-center space-x-2 text-subtle ${
                   isMobile ? 'text-xs' : 'text-sm'
                 }`}>
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                   <span>Tous systèmes opérationnels</span>
                 </div>
-                <div className={`text-gray-400 ${
+                <div className={`text-subtle ${
                   isMobile ? 'text-xs' : 'text-sm'
                 }`}>
                   Version 2.0.1

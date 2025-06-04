@@ -68,17 +68,17 @@ const Home = () => {
       <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8 bg-tokenx-dark-light/30">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-8 sm:mb-12">
-            <h2 className={`font-bold text-white mb-4 sm:mb-6 ${
+            <h2 className={`font-bold text-secondary mb-4 sm:mb-6 text-glow-white ${
               isMobile 
                 ? 'text-3xl' 
                 : 'text-4xl md:text-5xl'
             }`}>
               Marché en{' '}
-              <span className="bg-gradient-to-r from-tokenx-purple to-tokenx-blue bg-clip-text text-transparent">
+              <span className="text-primary">
                 Temps Réel
               </span>
             </h2>
-            <p className={`text-gray-400 max-w-3xl mx-auto ${
+            <p className={`text-muted max-w-3xl mx-auto ${
               isMobile ? 'text-lg' : 'text-xl'
             }`}>
               Suivez les performances de vos tokens favoris avec nos graphiques avancés
@@ -94,17 +94,17 @@ const Home = () => {
       <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-            <h2 className={`font-bold text-white mb-4 sm:mb-6 ${
+            <h2 className={`font-bold text-secondary mb-4 sm:mb-6 text-glow-white ${
               isMobile 
                 ? 'text-3xl' 
                 : 'text-4xl md:text-5xl'
             }`}>
               Fonctionnalités{' '}
-              <span className="bg-gradient-to-r from-tokenx-purple to-tokenx-blue bg-clip-text text-transparent">
+              <span className="text-primary">
                 Révolutionnaires
               </span>
             </h2>
-            <p className={`text-gray-400 max-w-3xl mx-auto ${
+            <p className={`text-muted max-w-3xl mx-auto ${
               isMobile ? 'text-lg' : 'text-xl'
             }`}>
               Découvrez les outils avancés qui font de TokenX la plateforme de référence pour la création de tokens
@@ -141,17 +141,17 @@ const Home = () => {
             isMobile ? 'text-center space-y-6' : 'flex flex-col lg:flex-row text-center lg:text-left space-y-8 lg:space-y-0'
           }`}>
             <div>
-              <h2 className={`font-bold text-white mb-4 ${
+              <h2 className={`font-bold text-secondary mb-4 text-glow-white ${
                 isMobile 
                   ? 'text-3xl' 
                   : 'text-4xl md:text-5xl'
               }`}>
                 Tokens{' '}
-                <span className="bg-gradient-to-r from-tokenx-purple to-tokenx-blue bg-clip-text text-transparent">
+                <span className="text-primary">
                   Populaires
                 </span>
               </h2>
-              <p className={`text-gray-400 max-w-2xl ${
+              <p className={`text-muted max-w-2xl ${
                 isMobile ? 'text-lg' : 'text-xl'
               }`}>
                 Découvrez les tokens les plus performants de notre plateforme
@@ -160,7 +160,7 @@ const Home = () => {
             <Button 
               variant="outline" 
               size="lg"
-              className={`border-2 border-tokenx-purple/50 text-tokenx-purple hover:bg-tokenx-purple hover:text-white transition-all duration-300 ${
+              className={`border-2 border-tokenx-purple/50 text-accent hover:bg-tokenx-purple hover:text-white transition-all duration-300 ${
                 isMobile 
                   ? 'text-base px-6 py-3 w-full max-w-xs mx-auto' 
                   : 'text-lg px-8 py-3'

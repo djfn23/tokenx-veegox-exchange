@@ -154,15 +154,50 @@
     @apply shadow-glow-blue;
   }
 
-  /* Text Effects */
-  .text-gradient {
+  /* Text Effects with Consistent Hierarchy */
+  .text-primary {
     @apply bg-gradient-to-r from-tokenx-purple via-tokenx-blue to-tokenx-purple bg-clip-text text-transparent;
     background-size: 200% auto;
     animation: gradient-shift 3s ease infinite;
+    text-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
+  }
+
+  .text-secondary {
+    @apply text-white;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  }
+
+  .text-body {
+    @apply text-gray-100;
+  }
+
+  .text-muted {
+    @apply text-gray-300;
+  }
+
+  .text-subtle {
+    @apply text-gray-400;
+  }
+
+  .text-accent {
+    @apply text-tokenx-purple;
+  }
+
+  .text-accent-blue {
+    @apply text-tokenx-blue;
+  }
+
+  /* Legacy text-gradient for backward compatibility */
+  .text-gradient {
+    @apply text-primary;
   }
 
   .text-glow {
     text-shadow: 0 0 10px rgba(124, 58, 237, 0.5);
+  }
+
+  .text-glow-white {
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
   }
 
   /* Floating Animation */

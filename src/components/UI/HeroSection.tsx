@@ -74,13 +74,13 @@ const HeroSection = () => {
           isMobile ? 'text-xs' : 'text-sm'
         }`}>
           <div className="relative">
-            <Sparkles className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-tokenx-purple group-hover:rotate-12 transition-transform duration-300`} />
+            <Sparkles className={`${isMobile ? 'w-4 h-4' : 'w-5 h-5'} text-accent group-hover:rotate-12 transition-transform duration-300`} />
             <div className="absolute inset-0 bg-tokenx-purple/30 rounded-full blur-md animate-pulse-glow"></div>
           </div>
-          <span className="font-medium text-gray-300 group-hover:text-white transition-colors duration-300">
+          <span className="font-medium text-muted group-hover:text-body transition-colors duration-300">
             {isMobile ? 'Nouvelle plateforme' : 'Nouvelle plateforme de création de tokens'}
           </span>
-          <Zap className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'} text-tokenx-blue animate-pulse`} />
+          <Zap className={`${isMobile ? 'w-3 h-3' : 'w-4 h-4'} text-accent-blue animate-pulse`} />
         </div>
 
         {/* Enhanced Main Title - Responsive */}
@@ -91,27 +91,27 @@ const HeroSection = () => {
               ? 'text-6xl md:text-7xl' 
               : 'text-6xl md:text-8xl lg:text-9xl'
         }`}>
-          <span className="block text-gradient animate-fade-in text-glow">
+          <span className="block text-primary animate-fade-in text-glow">
             L&apos;Avenir de la
           </span>
-          <span className="block text-gradient animate-fade-in animate-delay-300 text-glow">
+          <span className="block text-primary animate-fade-in animate-delay-300 text-glow">
             Création Token
           </span>
         </h1>
 
         {/* Enhanced Subtitle - Responsive */}
         <div className="max-w-5xl mx-auto mb-12 sm:mb-16 animate-fade-in animate-delay-500">
-          <p className={`text-gray-300 leading-relaxed font-light text-balance ${
+          <p className={`text-body leading-relaxed font-light text-balance ${
             isMobile 
               ? 'text-lg sm:text-xl' 
               : 'text-xl md:text-2xl lg:text-3xl'
           }`}>
             Créez, déployez et tradez vos tokens personnalisés sur notre 
-            <span className="text-gradient font-semibold"> plateforme d&apos;échange révolutionnaire</span>.
+            <span className="text-primary font-semibold"> plateforme d&apos;échange révolutionnaire</span>.
           </p>
           <div className="flex items-center justify-center mt-4 sm:mt-6 space-x-2">
             <div className="w-2 h-2 bg-tokenx-purple rounded-full animate-pulse"></div>
-            <span className={`text-tokenx-purple font-bold font-display tracking-wide ${
+            <span className={`text-accent font-bold font-display tracking-wide ${
               isMobile ? 'text-sm' : 'text-lg'
             }`}>
               Powered by VeegoxChain
@@ -175,12 +175,12 @@ const HeroSection = () => {
                 }`}>
                   {stat.icon}
                 </div>
-                <div className={`font-bold font-display text-gradient mb-2 sm:mb-3 text-glow ${
+                <div className={`font-bold font-display text-primary mb-2 sm:mb-3 text-glow ${
                   isMobile ? 'text-3xl' : 'text-4xl md:text-5xl'
                 }`}>
                   {stat.value}
                 </div>
-                <div className={`text-gray-400 font-medium group-hover:text-gray-300 transition-colors duration-300 ${
+                <div className={`text-subtle font-medium group-hover:text-muted transition-colors duration-300 ${
                   isMobile ? 'text-base' : 'text-lg'
                 }`}>
                   {stat.label}
@@ -195,7 +195,7 @@ const HeroSection = () => {
       {!isMobile && (
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-fade-in animate-delay-1000">
           <div className="flex flex-col items-center space-y-2">
-            <span className="text-sm text-gray-400 font-medium">Découvrir</span>
+            <span className="text-sm text-subtle font-medium">Découvrir</span>
             <div className="w-8 h-12 border-2 border-tokenx-glass-border rounded-full flex justify-center card-glass hover-glow cursor-pointer">
               <div className="w-1.5 h-4 bg-gradient-to-b from-tokenx-purple to-tokenx-blue rounded-full mt-2 animate-bounce"></div>
             </div>

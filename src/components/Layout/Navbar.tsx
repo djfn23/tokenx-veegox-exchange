@@ -63,12 +63,12 @@ const Navbar = () => {
             onClick={() => navigate('/')}
           >
             <div className="relative">
-              <div className="text-2xl md:text-3xl font-bold font-display text-gradient group-hover:scale-110 transition-transform duration-300">
+              <div className="text-2xl md:text-3xl font-bold font-display text-primary group-hover:scale-110 transition-transform duration-300">
                 TOKENX
               </div>
               <div className="absolute -inset-2 bg-gradient-to-r from-tokenx-purple/20 to-tokenx-blue/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"></div>
             </div>
-            <span className="ml-2 md:ml-3 text-xs md:text-sm text-gray-400 font-medium group-hover:text-gray-300 transition-colors duration-300">
+            <span className="ml-2 md:ml-3 text-xs md:text-sm text-subtle font-medium group-hover:text-muted transition-colors duration-300">
               by Veegox
             </span>
           </div>
@@ -82,8 +82,8 @@ const Navbar = () => {
                   onClick={() => navigate(item.path)}
                   className={`relative px-3 xl:px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 group animate-fade-in-fast ${
                     isActivePath(item.path)
-                      ? 'text-white bg-tokenx-glass border border-tokenx-glass-border shadow-inner-glow'
-                      : 'text-gray-300 hover:text-white hover:bg-tokenx-glass/50'
+                      ? 'text-secondary bg-tokenx-glass border border-tokenx-glass-border shadow-inner-glow'
+                      : 'text-muted hover:text-secondary hover:bg-tokenx-glass/50'
                   }`}
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
@@ -98,7 +98,7 @@ const Navbar = () => {
               {/* Desktop Dropdown */}
               <div className="relative">
                 <button 
-                  className="px-3 xl:px-4 py-2 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-tokenx-glass/50 transition-all duration-300 flex items-center space-x-1"
+                  className="px-3 xl:px-4 py-2 rounded-xl text-sm font-medium text-muted hover:text-secondary hover:bg-tokenx-glass/50 transition-all duration-300 flex items-center space-x-1"
                   onClick={() => setIsMoreOpen(!isMoreOpen)}
                 >
                   <span>Plus</span>
@@ -114,10 +114,10 @@ const Navbar = () => {
                             navigate(item.path);
                             setIsMoreOpen(false);
                           }}
-                          className={`block w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-tokenx-glass hover:text-white animate-fade-in-fast ${
+                          className={`block w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:bg-tokenx-glass hover:text-secondary animate-fade-in-fast ${
                             isActivePath(item.path) 
-                              ? 'text-white bg-tokenx-glass' 
-                              : 'text-gray-300'
+                              ? 'text-secondary bg-tokenx-glass' 
+                              : 'text-muted'
                           }`}
                           style={{ animationDelay: `${index * 50}ms` }}
                         >
@@ -146,7 +146,7 @@ const Navbar = () => {
           <div className="lg:hidden">
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="relative p-2 md:p-3 text-gray-300 hover:text-white hover:bg-tokenx-glass rounded-xl transition-all duration-300"
+              className="relative p-2 md:p-3 text-muted hover:text-secondary hover:bg-tokenx-glass rounded-xl transition-all duration-300"
             >
               <div className="w-5 h-5 md:w-6 md:h-6 relative">
                 <Menu className={`absolute inset-0 transition-all duration-300 ${isMenuOpen ? 'opacity-0 rotate-90' : 'opacity-100 rotate-0'}`} />
@@ -176,8 +176,8 @@ const Navbar = () => {
                   }}
                   className={`block w-full text-left px-4 py-3 sm:py-4 rounded-xl text-base font-medium transition-all duration-300 animate-fade-in-fast ${
                     isActivePath(item.path)
-                      ? 'text-white bg-tokenx-glass shadow-inner-glow'
-                      : 'text-gray-300 hover:text-white hover:bg-tokenx-glass/50'
+                      ? 'text-secondary bg-tokenx-glass shadow-inner-glow'
+                      : 'text-muted hover:text-secondary hover:bg-tokenx-glass/50'
                   }`}
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
@@ -200,8 +200,8 @@ const Navbar = () => {
                   }}
                   className={`block w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition-all duration-300 animate-fade-in-fast ${
                     isActivePath(item.path)
-                      ? 'text-white bg-tokenx-glass shadow-inner-glow'
-                      : 'text-gray-300 hover:text-white hover:bg-tokenx-glass/50'
+                      ? 'text-secondary bg-tokenx-glass shadow-inner-glow'
+                      : 'text-muted hover:text-secondary hover:bg-tokenx-glass/50'
                   }`}
                   style={{ animationDelay: `${(navItems.length + index) * 50}ms` }}
                 >
