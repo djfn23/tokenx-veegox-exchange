@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -34,6 +33,7 @@ const Navbar = () => {
     { name: 'Accueil', path: '/' },
     { name: 'Marché', path: '/market' },
     { name: 'Créer', path: '/create-token' },
+    { name: 'Crowdfunding', path: '/crowdfunding' },
     { name: 'Launchpad', path: '/launchpad' },
     { name: 'Staking', path: '/staking' },
     { name: 'Gouvernance', path: '/governance' }
@@ -57,14 +57,19 @@ const Navbar = () => {
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo - Responsive sizing */}
+          {/* Enhanced Logo with TX */}
           <div 
             className="flex items-center cursor-pointer group" 
             onClick={() => navigate('/')}
           >
             <div className="relative">
-              <div className="text-2xl md:text-3xl font-bold font-display text-primary group-hover:scale-110 transition-transform duration-300">
-                TOKENX
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-gradient-to-r from-tokenx-purple to-tokenx-blue rounded-xl flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform duration-300">
+                  <span className="text-sm font-bold text-white">TX</span>
+                </div>
+                <div className="text-2xl md:text-3xl font-bold font-display text-primary group-hover:scale-110 transition-transform duration-300">
+                  TOKENX
+                </div>
               </div>
               <div className="absolute -inset-2 bg-gradient-to-r from-tokenx-purple/20 to-tokenx-blue/20 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl -z-10"></div>
             </div>
