@@ -1,76 +1,89 @@
 
-import React from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import React, { useState } from 'react';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { CalendarIcon, Plus } from 'lucide-react';
+import { format } from 'date-fns';
+import { fr } from 'date-fns/locale';
 import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
 import { useCreateProject } from '@/hooks/useCrowdfunding';
-import { Plus, Coins } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
-const projectSchema = z.object({
-  title: z.string().min(3, 'Le titre doit contenir au moins 3 caractères'),
-  description: z.string().min(10, 'La description doit contenir au moins 10 caractères'),
-  goal_amount: z.number().min(1, 'Le montant objectif doit être supérieur à 0'),
-  token_type: z.enum(['VEX', 'sVEX', 'gVEX']),
-  end_date: z.string().min(1, 'La date de fin est requise'),
-  category: z.string().optional(),
-  image_url: z.string().url().optional().or(z.literal(''))
-});
-
-type ProjectFormData = z.infer<typeof projectSchema>;
+interface ProjectFormData {
+  title: string;
+  description: string;
+  goal_amount: string;
+  token_type: 'VEX' | 'sVEX' | 'gVEX';
+  end_date: string;
+  category?: string;
+  image_url?: string;
+}
 
 interface CreateProjectModalProps {
   trigger?: React.ReactNode;
 }
 
-const CreateProjectModal: React.FC<CreateProjectModalProps> = ({ trigger }) => {
-  const [open, setOpen] = React.useState(false);
+const CreateProjectModal = ({ trigger }: CreateProjectModalProps) => {
+  const [open, setOpen] = useState(false);
+  const [endDate, setEndDate] = useState<Date>();
   const createProjectMutation = useCreateProject();
 
-  const form = useForm<ProjectFormData>({
-    resolver: zodResolver(projectSchema),
-    defaultValues: {
-      title: '',
-      description: '',
-      goal_amount: 0,
-      token_type: 'VEX',
-      end_date: '',
-      category: '',
-      image_url: ''
-    }
-  });
+  const { register, handleSubmit, setValue, watch, reset, formState: { errors } } = useForm<ProjectFormData>();
 
-  const onSubmit = (data: ProjectFormData) => {
-    const projectData = {
-      title: data.title,
-      description: data.description,
-      goal_amount: Number(data.goal_amount),
-      token_type: data.token_type,
-      end_date: data.end_date,
-      category: data.category || undefined,
-      image_url: data.image_url || undefined,
-      status: 'active' as const,
-      start_date: new Date().toISOString()
-    };
-
-    createProjectMutation.mutate(projectData, {
-      onSuccess: () => {
-        setOpen(false);
-        form.reset();
+  const onSubmit = async (data: ProjectFormData) => {
+    try {
+      // Get current user
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        toast({
+          title: "Erreur",
+          description: "Vous devez être connecté pour créer un projet",
+          variant: "destructive"
+        });
+        return;
       }
-    });
+
+      const projectData = {
+        title: data.title,
+        description: data.description,
+        goal_amount: Number(data.goal_amount),
+        token_type: data.token_type,
+        end_date: data.end_date,
+        category: data.category || undefined,
+        image_url: data.image_url || undefined,
+        status: 'active' as const,
+        start_date: new Date().toISOString(),
+        creator_id: user.id
+      };
+
+      createProjectMutation.mutate(projectData, {
+        onSuccess: () => {
+          setOpen(false);
+          reset();
+          setEndDate(undefined);
+        }
+      });
+    } catch (error) {
+      console.error('Error creating project:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de créer le projet",
+        variant: "destructive"
+      });
+    }
   };
 
   const defaultTrigger = (
-    <Button className="btn-gradient hover-lift group">
-      <Plus className="w-4 h-4 mr-2 group-hover:rotate-90 transition-transform duration-300" />
-      <Coins className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform duration-300" />
-      Créer un Projet
+    <Button className="btn-gradient">
+      <Plus className="w-4 h-4 mr-2" />
+      Créer un projet
     </Button>
   );
 
@@ -79,223 +92,140 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({ trigger }) => {
       <DialogTrigger asChild>
         {trigger || defaultTrigger}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[700px] card-glass border-tokenx-glass-border backdrop-blur-xl">
-        <DialogHeader className="space-y-4 pb-6">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-r from-tokenx-purple to-tokenx-blue flex items-center justify-center">
-              <Coins className="w-5 h-5 text-white" />
-            </div>
-            <div>
-              <DialogTitle className="text-secondary text-2xl font-bold">
-                Créer un Projet de Crowdfunding
-              </DialogTitle>
-              <p className="text-muted text-sm">Financez votre projet avec les tokens de la communauté</p>
-            </div>
-          </div>
+      <DialogContent className="card-glass max-w-2xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle className="text-2xl font-bold text-secondary">Créer un nouveau projet</DialogTitle>
+          <DialogDescription className="text-muted">
+            Lancez votre campagne de crowdfunding avec des tokens VEX
+          </DialogDescription>
         </DialogHeader>
 
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="md:col-span-2">
-                <FormField
-                  control={form.control}
-                  name="title"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-body flex items-center space-x-2">
-                        <span>Titre du Projet</span>
-                        <div className="w-1 h-1 bg-tokenx-purple rounded-full"></div>
-                      </FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="Nom de votre projet"
-                          className="bg-tokenx-dark-light/50 border-tokenx-glass-border text-body focus:border-tokenx-purple transition-colors"
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <div className="md:col-span-2">
-                <FormField
-                  control={form.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-body flex items-center space-x-2">
-                        <span>Description</span>
-                        <div className="w-1 h-1 bg-tokenx-blue rounded-full"></div>
-                      </FormLabel>
-                      <FormControl>
-                        <Textarea 
-                          placeholder="Décrivez votre projet en détail..."
-                          className="bg-tokenx-dark-light/50 border-tokenx-glass-border text-body min-h-[120px] focus:border-tokenx-purple transition-colors resize-none"
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-
-              <FormField
-                control={form.control}
-                name="goal_amount"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-body">Montant Objectif</FormLabel>
-                    <FormControl>
-                      <div className="relative">
-                        <Input 
-                          type="number"
-                          placeholder="1000"
-                          className="bg-tokenx-dark-light/50 border-tokenx-glass-border text-body pl-10 focus:border-tokenx-purple transition-colors"
-                          {...field}
-                          onChange={(e) => field.onChange(Number(e.target.value))}
-                        />
-                        <Coins className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-tokenx-purple" />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="title">Titre du projet *</Label>
+              <Input
+                id="title"
+                {...register('title', { required: 'Le titre est requis' })}
+                placeholder="Nom de votre projet"
+                className="bg-tokenx-dark-light/50 border-tokenx-glass-border"
               />
-
-              <FormField
-                control={form.control}
-                name="token_type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-body">Type de Token</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger className="bg-tokenx-dark-light/50 border-tokenx-glass-border text-body focus:border-tokenx-purple transition-colors">
-                          <SelectValue placeholder="Sélectionnez un token" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent className="card-glass border-tokenx-glass-border">
-                        <SelectItem value="VEX" className="text-body hover:bg-tokenx-glass focus:bg-tokenx-glass">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-tokenx-purple rounded-full"></div>
-                            <span>VEX - Token Principal</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="sVEX" className="text-body hover:bg-tokenx-glass focus:bg-tokenx-glass">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-tokenx-blue rounded-full"></div>
-                            <span>sVEX - Token de Staking</span>
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="gVEX" className="text-body hover:bg-tokenx-glass focus:bg-tokenx-glass">
-                          <div className="flex items-center space-x-2">
-                            <div className="w-2 h-2 bg-tokenx-accent rounded-full"></div>
-                            <span>gVEX - Token de Gouvernance</span>
-                          </div>
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="end_date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-body">Date de Fin</FormLabel>
-                    <FormControl>
-                      <Input 
-                        type="date"
-                        className="bg-tokenx-dark-light/50 border-tokenx-glass-border text-body focus:border-tokenx-purple transition-colors"
-                        min={new Date().toISOString().split('T')[0]}
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-body">Catégorie (Optionnel)</FormLabel>
-                    <FormControl>
-                      <Input 
-                        placeholder="Tech, Art, Gaming..."
-                        className="bg-tokenx-dark-light/50 border-tokenx-glass-border text-body focus:border-tokenx-purple transition-colors"
-                        {...field} 
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <div className="md:col-span-2">
-                <FormField
-                  control={form.control}
-                  name="image_url"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-body">URL de l'Image (Optionnel)</FormLabel>
-                      <FormControl>
-                        <Input 
-                          placeholder="https://example.com/image.jpg"
-                          className="bg-tokenx-dark-light/50 border-tokenx-glass-border text-body focus:border-tokenx-purple transition-colors"
-                          {...field} 
-                        />
-                      </FormControl>
-                      <FormDescription className="text-subtle">
-                        Ajoutez une image pour rendre votre projet plus attractif
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
+              {errors.title && <p className="text-sm text-red-400">{errors.title.message}</p>}
             </div>
 
-            <div className="flex gap-4 pt-6 border-t border-tokenx-glass-border">
-              <Button 
-                type="button" 
-                variant="outline" 
-                onClick={() => setOpen(false)}
-                className="flex-1 border-tokenx-glass-border text-muted hover:bg-tokenx-glass hover:text-body transition-all duration-300"
-              >
-                Annuler
-              </Button>
-              <Button 
-                type="submit" 
-                className="flex-1 btn-gradient hover-lift group"
-                disabled={createProjectMutation.isPending}
-              >
-                <span className="flex items-center space-x-2">
-                  {createProjectMutation.isPending ? (
-                    <>
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                      <span>Création...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Coins className="w-4 h-4 group-hover:scale-110 transition-transform duration-300" />
-                      <span>Créer le Projet</span>
-                    </>
-                  )}
-                </span>
-              </Button>
+            <div className="space-y-2">
+              <Label htmlFor="category">Catégorie</Label>
+              <Input
+                id="category"
+                {...register('category')}
+                placeholder="ex: Technologie, Art, Jeu..."
+                className="bg-tokenx-dark-light/50 border-tokenx-glass-border"
+              />
             </div>
-          </form>
-        </Form>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="description">Description *</Label>
+            <Textarea
+              id="description"
+              {...register('description', { required: 'La description est requise' })}
+              placeholder="Décrivez votre projet en détail..."
+              rows={4}
+              className="bg-tokenx-dark-light/50 border-tokenx-glass-border resize-none"
+            />
+            {errors.description && <p className="text-sm text-red-400">{errors.description.message}</p>}
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label htmlFor="goal_amount">Objectif de financement *</Label>
+              <Input
+                id="goal_amount"
+                type="number"
+                {...register('goal_amount', { 
+                  required: 'L\'objectif est requis',
+                  min: { value: 1, message: 'L\'objectif doit être supérieur à 0' }
+                })}
+                placeholder="1000"
+                className="bg-tokenx-dark-light/50 border-tokenx-glass-border"
+              />
+              {errors.goal_amount && <p className="text-sm text-red-400">{errors.goal_amount.message}</p>}
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="token_type">Type de token *</Label>
+              <Select onValueChange={(value) => setValue('token_type', value as 'VEX' | 'sVEX' | 'gVEX')}>
+                <SelectTrigger className="bg-tokenx-dark-light/50 border-tokenx-glass-border">
+                  <SelectValue placeholder="Choisir un token" />
+                </SelectTrigger>
+                <SelectContent className="card-glass border-tokenx-glass-border">
+                  <SelectItem value="VEX">VEX - Token principal</SelectItem>
+                  <SelectItem value="sVEX">sVEX - Token de staking</SelectItem>
+                  <SelectItem value="gVEX">gVEX - Token de gouvernance</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Date de fin *</Label>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="w-full justify-start text-left font-normal bg-tokenx-dark-light/50 border-tokenx-glass-border hover:bg-tokenx-dark-light/70"
+                  >
+                    <CalendarIcon className="mr-2 h-4 w-4" />
+                    {endDate ? format(endDate, 'PPP', { locale: fr }) : 'Sélectionner une date'}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 card-glass border-tokenx-glass-border">
+                  <Calendar
+                    mode="single"
+                    selected={endDate}
+                    onSelect={(date) => {
+                      setEndDate(date);
+                      if (date) {
+                        setValue('end_date', date.toISOString());
+                      }
+                    }}
+                    disabled={(date) => date <= new Date()}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="image_url">Image du projet (URL)</Label>
+              <Input
+                id="image_url"
+                {...register('image_url')}
+                placeholder="https://exemple.com/image.jpg"
+                className="bg-tokenx-dark-light/50 border-tokenx-glass-border"
+              />
+            </div>
+          </div>
+
+          <div className="flex justify-end space-x-3 pt-6">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setOpen(false)}
+              className="border-tokenx-glass-border hover:bg-tokenx-dark-light/30"
+            >
+              Annuler
+            </Button>
+            <Button
+              type="submit"
+              disabled={createProjectMutation.isPending}
+              className="btn-gradient"
+            >
+              {createProjectMutation.isPending ? 'Création...' : 'Créer le projet'}
+            </Button>
+          </div>
+        </form>
       </DialogContent>
     </Dialog>
   );
