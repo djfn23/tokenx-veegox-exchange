@@ -1,9 +1,9 @@
 
 import React from 'react';
-import DeploymentDashboard from '@/components/Deployment/DeploymentDashboard';
+import DeploymentTabs from '@/components/Deployment/DeploymentTabs';
 
 const Deployment = () => {
-  return <DeploymentDashboard />;
+  return <DeploymentTabs />;
 };
 
 export default Deployment;

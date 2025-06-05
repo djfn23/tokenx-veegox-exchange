@@ -64,10 +64,8 @@ export class BlockchainDeploymentService {
   async deployVeegoxChain(): Promise<void> {
     console.log(`Initializing VeegoxChain on ${this.config.name}...`);
     
-    // Simulate blockchain initialization
     await this.delay(2000);
     
-    // Store chain configuration in database
     try {
       const { error } = await supabase
         .from('veegoxchain_config')
@@ -82,7 +80,10 @@ export class BlockchainDeploymentService {
           is_active: true,
           is_testnet: this.config.isTestnet,
           consensus: 'Proof of Stake',
-          gas_limit: '30000000'
+          gas_limit: '30000000',
+          network_status: 'initializing', // Start with initializing status
+          total_validators: 0,
+          total_stake: 0
         });
 
       if (error) {
@@ -103,21 +104,21 @@ export class BlockchainDeploymentService {
     const validators: ValidatorNode[] = [
       {
         address: '0x742d35Cc7234C4E0B9C8D4aA0b84E9D3f4B5F6E7',
-        stake: '100000000000000000000000', // 100,000 VEX
+        stake: '100000000000000000000000',
         commission: 5.0,
         region: 'Europe',
         status: 'active'
       },
       {
         address: '0x853e46Dd8345D5F1C9D5E5aA1c95F0E4f5C6G7H8',
-        stake: '75000000000000000000000', // 75,000 VEX
+        stake: '75000000000000000000000',
         commission: 3.5,
         region: 'North America',
         status: 'active'
       },
       {
         address: '0x964f57Ee9456E6G2D0E6F6bb2d06G1F5g6D7H8I9',
-        stake: '50000000000000000000000', // 50,000 VEX
+        stake: '50000000000000000000000',
         commission: 4.0,
         region: 'Asia',
         status: 'active'
@@ -126,7 +127,6 @@ export class BlockchainDeploymentService {
 
     await this.delay(1500);
 
-    // Store validators in database
     for (const validator of validators) {
       try {
         const { error } = await supabase
@@ -138,7 +138,10 @@ export class BlockchainDeploymentService {
             is_active: validator.status === 'active',
             chain_id: this.config.chainId,
             delegators: 0,
-            uptime: 100.0
+            uptime: 100.0,
+            blocks_proposed: 0,
+            rewards_earned: 0,
+            last_active_at: new Date().toISOString()
           });
 
         if (error) {
@@ -148,6 +151,15 @@ export class BlockchainDeploymentService {
         console.error('Error storing validator:', error);
       }
     }
+
+    // Update total validators count
+    await supabase
+      .from('veegoxchain_config')
+      .update({ 
+        total_validators: validators.length,
+        total_stake: validators.reduce((sum, v) => sum + parseFloat(v.stake), 0)
+      })
+      .eq('chain_id', this.config.chainId);
 
     console.log(`${validators.length} validators configured successfully`);
   }
@@ -240,13 +252,12 @@ export class BlockchainDeploymentService {
     
     await this.delay(1000);
     
-    // Create initial blocks for monitoring
     const genesisBlock = {
       block_number: 0,
       block_hash: '0x0000000000000000000000000000000000000000000000000000000000000000',
       parent_hash: '0x0000000000000000000000000000000000000000000000000000000000000000',
       timestamp: Math.floor(Date.now() / 1000),
-      validator: this.deployedContracts[0]?.address || '0x742d35Cc7234C4E0B9C8D4aA0b84E9D3f4B5F6E7',
+      validator: '0x742d35Cc7234C4E0B9C8D4aA0b84E9D3f4B5F6E7',
       transaction_count: 0,
       gas_used: 0,
       gas_limit: 30000000,
@@ -261,6 +272,20 @@ export class BlockchainDeploymentService {
       if (error) {
         console.error('Error creating genesis block:', error);
       }
+
+      // Create initial network metrics
+      const initialMetrics = {
+        chain_id: this.config.chainId,
+        block_height: 0,
+        active_validators: 3,
+        total_transactions: 0,
+        avg_block_time: this.config.blockTime,
+        tps: 0,
+        gas_price_avg: 20000000000
+      };
+
+      await supabase.from('veegoxchain_metrics').insert(initialMetrics);
+
     } catch (error) {
       console.error('Error in setupMonitoring:', error);
     }
