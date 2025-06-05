@@ -1,6 +1,5 @@
-
 import React, { useState } from 'react';
-import { useProjects } from '@/hooks/useCrowdfunding';
+import { useCrowdfundingProjects } from '@/hooks/useCrowdfunding';
 import ProjectCard from '@/components/Crowdfunding/ProjectCard';
 import CreateProjectModal from '@/components/Crowdfunding/CreateProjectModal';
 import { Button } from '@/components/ui/button';
@@ -12,7 +11,7 @@ import { Search, Filter, Coins, TrendingUp, Target, Users, Plus, Sparkles } from
 
 const Crowdfunding = () => {
   const navigate = useNavigate();
-  const { data: projects, isLoading, error } = useProjects();
+  const { data: projects, isLoading, error } = useCrowdfundingProjects();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('all');
   const [tokenFilter, setTokenFilter] = useState<string>('all');

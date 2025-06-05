@@ -47,12 +47,15 @@ const CreateProjectModal: React.FC<CreateProjectModalProps> = ({ trigger }) => {
 
   const onSubmit = (data: ProjectFormData) => {
     const projectData = {
-      ...data,
+      title: data.title,
+      description: data.description,
       goal_amount: Number(data.goal_amount),
-      status: 'active' as const,
-      start_date: new Date().toISOString(),
+      token_type: data.token_type,
+      end_date: data.end_date,
+      category: data.category || undefined,
       image_url: data.image_url || undefined,
-      creator_id: 'temp-user-id' // TODO: Replace with actual user ID from auth
+      status: 'active' as const,
+      start_date: new Date().toISOString()
     };
 
     createProjectMutation.mutate(projectData, {
