@@ -36,7 +36,8 @@ const Navbar = () => {
     { name: 'Crowdfunding', path: '/crowdfunding' },
     { name: 'Launchpad', path: '/launchpad' },
     { name: 'Staking', path: '/staking' },
-    { name: 'Gouvernance', path: '/governance' }
+    { name: 'Gouvernance', path: '/governance' },
+    { name: 'Déploiement', path: '/deployment' }
   ];
 
   const moreItems = [
